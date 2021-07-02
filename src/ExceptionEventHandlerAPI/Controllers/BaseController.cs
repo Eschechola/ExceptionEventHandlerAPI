@@ -1,4 +1,5 @@
-﻿using ExceptionEventHandlerAPI.Data.Handler;
+﻿using ExceptionEventHandlerAPI.Data.Enums;
+using ExceptionEventHandlerAPI.Data.Handler;
 using ExceptionEventHandlerAPI.Data.Notifications;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -16,17 +17,30 @@ namespace ExceptionEventHandlerAPI.Controllers
             _domainEventHandler = (DomainEventHandler)domainEventHandler;
         }
 
-        protected IList<DomainEvent> GetDomainErrors()
+        protected IList<DomainEvent> GetDomainEvents()
             => _domainEventHandler.GetNotifications()
                     .ToList();
 
         protected bool HasDomainErrors()
             => _domainEventHandler.ErrorsCount() > 0;
 
-        protected ObjectResult GetDomainErrorApiResult()
+        protected ObjectResult ApiResult()
         {
-            var error = GetDomainErrors().FirstOrDefault();
-            return StatusCode(error.StatusCode, error.Message);
+            var domainEvent = GetDomainEvents()
+                .FirstOrDefault();
+
+            return StatusCode(GetStatusCodeByErrorType(domainEvent.Error), domainEvent.Message);
+        }
+
+        private int GetStatusCodeByErrorType(ErrorType errorType)
+        {
+            switch (errorType)
+            {
+                case ErrorType.BadRequest:
+                    return 400;
+            }
+
+            return 500;
         }
     }
 }

@@ -1,16 +1,17 @@
-﻿using MediatR;
+﻿using ExceptionEventHandlerAPI.Data.Enums;
+using MediatR;
 
 namespace ExceptionEventHandlerAPI.Data.Notifications
 {
     public class DomainEvent : INotification
     {
         public object Message { get; init; }
-        public int StatusCode { get; init; }
+        public ErrorType Error { get; init; }
 
-        public DomainEvent(object message, int statusCode)
+        public DomainEvent(object message, ErrorType error)
         {
             Message = message;
-            StatusCode = statusCode;
+            Error = error;
         }
     }
 }

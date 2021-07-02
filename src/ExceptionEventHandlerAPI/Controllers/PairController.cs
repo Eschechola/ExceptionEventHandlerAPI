@@ -1,4 +1,5 @@
-﻿using ExceptionEventHandlerAPI.Data.Handler;
+﻿using ExceptionEventHandlerAPI.Data.Enums;
+using ExceptionEventHandlerAPI.Data.Handler;
 using ExceptionEventHandlerAPI.Data.Notifications;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -26,9 +27,9 @@ namespace ExceptionEventHandlerAPI.Controllers
             if (number % 2 == 0)
                 return Ok(true);
 
-            await _mediator.PublishDomainEvent(new DomainEvent(false, 404));
+            await _mediator.PublishDomainEvent(new DomainEvent(false, ErrorType.BadRequest));
 
-            return GetDomainErrorApiResult();
+            return ApiResult();
         }
     }
 }
