@@ -16,8 +16,17 @@ namespace ExceptionEventHandlerAPI.Controllers
             _domainEventHandler = (DomainEventHandler)domainEventHandler;
         }
 
-        protected DomainEvent GetDomainError()
+        protected IList<DomainEvent> GetDomainErrors()
             => _domainEventHandler.GetNotifications()
-                    .FirstOrDefault();
+                    .ToList();
+
+        protected bool HasDomainErrors()
+            => _domainEventHandler.ErrorsCount() > 0;
+
+        protected ObjectResult GetDomainErrorApiResult()
+        {
+            var error = GetDomainErrors().FirstOrDefault();
+            return StatusCode(error.StatusCode, error.Message);
+        }
     }
 }

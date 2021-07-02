@@ -28,8 +28,7 @@ namespace ExceptionEventHandlerAPI.Controllers
 
             await _mediator.PublishDomainEvent(new DomainEvent(false, 404));
 
-            var domainError = GetDomainError();
-            return StatusCode(domainError.StatusCode, domainError.Message);
+            return GetDomainErrorApiResult();
         }
     }
 }

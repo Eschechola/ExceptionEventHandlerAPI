@@ -23,5 +23,8 @@ namespace ExceptionEventHandlerAPI.Data.Handler
 
         public IList<DomainEvent> GetNotifications()
             => _notifications;
+
+        public int ErrorsCount()
+            => _notifications.Count;
     }
 }
